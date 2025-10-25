@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR"> 
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cupcake Shop — Projeto Faculdade</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-grid">
+      <div class="brand" onclick="navigate('catalog')">
+        <div class="logo-mark">🧁</div>
+        <div class="brand-text"><strong>Cupcake</strong><span class="sub">Shop</span></div>
+      </div>
+      <nav class="main-nav">
+        <nav>
+  <a href="#" onclick="navigate('catalog')">Início</a>
+  <a href="#" onclick="navigate('ratings')">Avaliações</a>
+  <a href="#" onclick="navigate('about')">Sobre</a>
+  <a href="#" id="to-signup">Criar conta</a>
+</nav>
+
+      </nav>
+      <div class="actions">
+        <button class="btn ghost" onclick="openLogin()">Login</button>
+        <button class="btn primary" id="open-cart-btn" onclick="toggleCart()">Carrinho (<span id="cart-count">0</span>)</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container site-main">
+    <section id="hero" class="hero">
+      <div class="hero-copy">
+        <h1>Cupcakes artesanais para todos os momentos</h1>
+        <p>Feitos com amor e ingredientes selecionados ❤️ escolha seu sabor favorito e receba em casa.</p>
+        <div><button class="btn primary" onclick="navigate('catalog')">Ver catálogo</button></div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/images/cupcake1.svg" alt="Cupcake destaque">
+      </div>
+    </section>
+
+    <section id="catalog" class="catalog-section">
+      <h2>Catálogo</h2>
+      <div class="filters">
+        <div class="search">
+          <input id="search-input" placeholder="Buscar cupcakes..." oninput="renderCatalog()" />
+        </div>
+        <div>
+          <select id="sort" onchange="renderCatalog()">
+            <option value="default">Ordenar: padrão</option>
+            <option value="price-asc">Preço: menor</option>
+            <option value="price-desc">Preço: maior</option>
+          </select>
+        </div>
+      </div>
+      <div id="product-grid" class="product-grid" aria-live="polite">
+        <!-- products injected by JS -->
+      </div>
+    </section>
+
+    <section id="payment" class="hidden">
+      <h2>Pagamento</h2>
+      <div class="payment-grid">
+        <div class="payment-methods">
+          <label>Método</label>
+          <select id="payment-method">
+            <option>PIX</option>
+            <option>Boleto</option>
+            <option>Cartão de Crédito</option>
+          </select>
+          <div class="summary" id="payment-summary">Total: R$ 0,00</div>
+          <div><button class="btn primary" onclick="completePayment()">Confirmar pagamento</button></div>
+        </div>
+        <div class="payment-info">
+          <h3>Endereço</h3>
+          <p>Caxias do Sul - RS</p>
+        </div>
+      </div>
+    </section>
+
+
+<!-- ====== CRIE CONTA ====== -->
+<section id="signup" class="hidden signup-section" aria-hidden="true">
+  <div class="signup-card">
+    <h2>Criar conta</h2>
+    <p>Crie sua conta! Com dados fictícios!</p>
+
+    <form id="signup-form" class="signup-form" autocomplete="off" novalidate>
+      <div class="field">
+        <label for="signup-name">Nome completo</label>
+        <input id="signup-name" name="name" type="text" placeholder="Ex.: Ana Maria" required>
+      </div>
+
+      <div class="field">
+        <label for="signup-city">Cidade</label>
+        <input id="signup-city" name="city" type="text" placeholder="Ex.: São Paulo">
+      </div>
+
+      <div class="field">
+        <label for="signup-email">Email</label>
+        <input id="signup-email" name="email" type="email" placeholder="seu@exemplo.com" required>
+      </div>
+
+      <div class="field">
+        <label for="signup-pass">Senha</label>
+        <input id="signup-pass" name="password" type="password" placeholder="Crie uma senha" required>
+      </div>
+
+      <div class="field">
+        <label for="signup-note">Observação (opcional)</label>
+        <input id="signup-note" name="note" type="text" placeholder="Ex.: gosto de chocolate">
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn primary">Criar conta</button>
+        <button type="button" id="signup-cancel" class="link">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Modal de sucesso (parabéns) -->
+<div id="signup-success" class="modal hidden" aria-hidden="true" role="dialog">
+  <div class="modal-content">
+    <h3>Parabéns!</h3>
+    <p>Sua conta foi criada com sucesso. 🎉</p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+      <button id="signup-success-ok" class="btn">OK</button>
+    </div>
+    
+  </div>
+</div>
+<!-- ====== /CRIE CONTA ====== -->
+
+
+    <section id="ratings" class="hidden">
+      <h2>Avaliações</h2>
+      <div class="ratings-grid" id="rating-list"></div>
+    </section>
+
+    <section id="about" class="hidden">
+      <h2>Sobre</h2>
+      <p>Projeto Integrador Transdisciplinar em Engenharia de Software I I. Loja de Cupcakes.</p>
+    </section>
+
+  </main>
+
+  <!-- Cart sidebar -->
+  <aside id="cart" class="cart-sidebar hidden" aria-hidden="true">
+    <div class="cart-header">
+      <h3>Seu Carrinho</h3>
+      <button class="btn ghost" onclick="toggleCart()">Fechar</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-footer">
+      <div id="cart-total" class="cart-total">Total: R$ 0,00</div>
+      <div><button class="btn primary" onclick="goToPayment()">Finalizar compra</button></div>
+    </div>
+  </aside>
+
+  <!-- Product modal -->
+   
+  <div id="product-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-inner">
+      <button class="modal-close" onclick="closeProductModal()">✕</button>
+      <div class="modal-grid">
+        <div class="modal-image"><img id="modal-img" src="" alt=""></div>
+        <div class="modal-details">
+          <h3 id="modal-name">Nome</h3>
+          <div id="modal-price" class="price">R$ 0,00</div>
+          <p id="modal-desc">Descrição do produto...</p>
+          <div class="qty-row"><button class="btn ghost" onclick="changeQtyModal(-1)">-</button><div id="modal-qty">1</div><button class="btn ghost" onclick="changeQtyModal(1)">+</button></div>
+          <div style="margin-top:12px"><button class="btn primary" id="modal-add">Adicionar ao carrinho</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login modal -->
+  <div id="login-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-inner small">
+      <button class="modal-close" onclick="closeLogin()">✕</button>
+      <h3>Login</h3>
+      <form id="login-form" onsubmit="event.preventDefault(); closeLogin();">
+        <label>Email</label>
+        <input type="email" id="login-email" required>
+        <label>Senha</label>
+        <input type="password" id="login-pass" required>
+        <div style="margin-top:10px"><button class="btn primary" type="submit">Entrar</button></div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© Cupcake Shop — Projeto criado por: Raul Chaves</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

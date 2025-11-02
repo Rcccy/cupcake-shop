@@ -56,11 +56,12 @@ Clique com o botão direito e selecione "Abrir com o navegador".
 
 O site será executado localmente e estará pronto para navegação.
 ----------------------------------------------------------------
+
 👨‍💻 Autor
 
-Raul Ramilio Chaves da Silva 
+Nome: Raul Ramilio Chaves da Silva 
 RGM: 30588090
 Curso: Engenharia de Software
 Projeto Integrador Transdisciplinar II
-Faculdade - Centro Universitário da Serra Gaúcha FSG
+Faculdade: Centro Universitário da Serra Gaúcha FSG
 RGM: 30588090
